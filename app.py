@@ -16,6 +16,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import plotly.express as px
 import plotly.graph_objects as go
+import streamlit.components.v1 as components  # at top after streamlit import
 
 from models import (
     NoteCreate, SearchFilters, MediaUpload, NoteWithDetails,
@@ -206,40 +207,40 @@ def create_note_card(note: NoteWithDetails) -> None:
             col1, col2 = st.columns([3, 1])
             
             with col1:
-                st.markdown(f"""
-                <div class="note-card">
-                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                        <div style="width: 40px; height: 40px; background: var(--primary-color); 
-                                    border-radius: 50%; display: flex; align-items: center; 
-                                    justify-content: center; margin-right: 12px;">
-                            <span style="color: white; font-weight: bold;">🏁</span>
+                components.html(f"""
+                <div class=\"note-card\">
+                    <div style=\"display: flex; align-items: center; margin-bottom: 10px;\">
+                        <div style=\"width: 40px; height: 40px; background: var(--primary-color); \
+                                    border-radius: 50%; display: flex; align-items: center; \
+                                    justify-content: center; margin-right: 12px;\">
+                            <span style=\"color: white; font-weight: bold;\">🏁</span>
                         </div>
                         <div>
-                            <div style="font-weight: 600; color: var(--dark-bg);">
+                            <div style=\"font-weight: 600; color: var(--dark-bg);\">
                                 {note.driver_name or "General Note"}
                             </div>
-                            <div style="font-size: 0.9em; color: #666;">
+                            <div style=\"font-size: 0.9em; color: #666;\">
                                 {get_time_ago(note.created_at)}
                             </div>
                         </div>
                     </div>
                     
-                    <div style="margin-bottom: 15px; line-height: 1.5;">
+                    <div style=\"margin-bottom: 15px; line-height: 1.5;\">
                         {note.body}
                     </div>
                     
-                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
-                        {f'<span class="tag">📍 {note.track_name}</span>' if note.track_name else ''}
-                        {f'<span class="tag">🏆 {note.series_name}</span>' if note.series_name else ''}
-                        {f'<span class="tag">🚗 {note.session_type}</span>' if note.session_type else ''}
-                        {f'<span class="tag">📂 {note.category}</span>'}
+                    <div style=\"display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;\">
+                        {f'<span class=\"tag\">📍 {note.track_name}</span>' if note.track_name else ''}
+                        {f'<span class=\"tag\">🏆 {note.series_name}</span>' if note.series_name else ''}
+                        {f'<span class=\"tag\">🚗 {note.session_type}</span>' if note.session_type else ''}
+                        {f'<span class=\"tag\">📂 {note.category.value}</span>'}
                     </div>
                     
-                    <div style="display: flex; gap: 8px;">
-                        {''.join([f'<span class="tag">#{tag.label}</span>' for tag in note.tags])}
+                    <div style=\"display: flex; gap: 8px;\">
+                        {''.join([f'<span class=\"tag\">#{tag.label}</span>' for tag in (note.tags or [])])}
                     </div>
                 </div>
-                """, unsafe_allow_html=True)
+                """, height=250)
             
             with col2:
                 # Action buttons
