@@ -16,7 +16,6 @@ aiofiles
 # Media Processing
 Pillow
 pillow-heif
-moviepy
 
 # Logging
 loguru

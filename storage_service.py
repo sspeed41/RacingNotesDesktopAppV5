@@ -15,9 +15,16 @@ from pathlib import Path
 import aiofiles
 from PIL import Image, ImageOps, ExifTags
 import pillow_heif
-from moviepy.editor import VideoFileClip
 import structlog
 from loguru import logger
+
+# Optional moviepy import for video processing
+try:
+    from moviepy.editor import VideoFileClip
+    MOVIEPY_AVAILABLE = True
+except ImportError:
+    VideoFileClip = None
+    MOVIEPY_AVAILABLE = False
 
 from supabase_client import get_supabase_client
 from models import MediaTypeEnum, MediaUpload
@@ -131,6 +138,11 @@ class StorageService:
 
     async def compress_video(self, video_data: bytes, filename: str) -> Tuple[bytes, str]:
         """Compress a video with optimization."""
+        if not MOVIEPY_AVAILABLE:
+            # If moviepy is not available, return the original video data
+            self.logger.warning("MoviePy not available, returning original video data")
+            return video_data, filename
+            
         try:
             # Create temporary files
             with tempfile.NamedTemporaryFile(suffix=Path(filename).suffix, delete=False) as input_file:
@@ -192,6 +204,9 @@ class StorageService:
                 # Check if compression was effective
                 if len(compressed_data) > self.max_compressed_video_size:
                     # Try more aggressive compression
+                    if not MOVIEPY_AVAILABLE:
+                        self.logger.warning("MoviePy not available, cannot perform aggressive compression")
+                        return compressed_data, Path(filename).with_suffix('.mp4').name
                     video = VideoFileClip(input_path)
                     
                     # Further reduce quality
@@ -403,26 +418,29 @@ class StorageService:
                     info["type"] = "image"
                     
             elif file_ext in self.video_formats:
-                try:
-                    with tempfile.NamedTemporaryFile(suffix=file_ext, delete=False) as temp_file:
-                        temp_file.write(file_data)
-                        temp_path = temp_file.name
-                    
-                    try:
-                        video = VideoFileClip(temp_path)
-                        info.update({
-                            "type": "video",
-                            "width": video.w,
-                            "height": video.h,
-                            "duration": video.duration,
-                            "fps": video.fps
-                        })
-                        video.close()
-                    finally:
-                        os.unlink(temp_path)
-                        
-                except Exception:
+                if not MOVIEPY_AVAILABLE:
                     info["type"] = "video"
+                else:
+                    try:
+                        with tempfile.NamedTemporaryFile(suffix=file_ext, delete=False) as temp_file:
+                            temp_file.write(file_data)
+                            temp_path = temp_file.name
+                        
+                        try:
+                            video = VideoFileClip(temp_path)
+                            info.update({
+                                "type": "video",
+                                "width": video.w,
+                                "height": video.h,
+                                "duration": video.duration,
+                                "fps": video.fps
+                            })
+                            video.close()
+                        finally:
+                            os.unlink(temp_path)
+                            
+                    except Exception:
+                        info["type"] = "video"
             else:
                 info["type"] = "unknown"
             
