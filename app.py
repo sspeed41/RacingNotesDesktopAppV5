@@ -216,7 +216,7 @@ def create_note_card(note: NoteWithDetails) -> None:
                             <span style=\"color: white; font-weight: bold;\">🏁</span>
                         </div>
                         <div>
-                            <div style=\"font-weight: 600; color: #1F2937;\">
+                            <div style=\"font-weight: 600; color: #E2E8F0;\">
                                 {note.driver_name or "General Note"}
                             </div>
                             <div style=\"font-size: 0.9em; color: #CCCCCC;\">
