@@ -554,4 +554,14 @@ def success_toast(message: str) -> None:
 
 def error_toast(message: str) -> None:
     """Show error toast message."""
-    UIUtils.show_error_toast(message) 
+    UIUtils.show_error_toast(message)
+
+
+def info_toast(message: str) -> None:
+    """Show info toast message."""
+    UIUtils.show_info_toast(message)
+
+
+def warning_toast(message: str) -> None:
+    """Show warning toast message."""
+    UIUtils.show_warning_toast(message) 
