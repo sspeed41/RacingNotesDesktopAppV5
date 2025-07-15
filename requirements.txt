@@ -2,24 +2,12 @@
 streamlit
 pydantic
 
-# Database & Storage
+# Database & Storage  
 supabase
-postgrest
 
 # UI Components
 streamlit-option-menu
 plotly
-
-# Async Operations
-aiofiles
-
-# Media Processing
-Pillow
-pillow-heif
-
-# Logging
-loguru
-structlog
 
 # Basic utilities
 requests
@@ -31,4 +19,10 @@ pandas
 numpy
 
 # Date utilities
-python-dateutil 
+python-dateutil
+
+# Logging
+loguru
+
+# Media Processing
+Pillow 

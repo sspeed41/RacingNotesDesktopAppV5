@@ -12,11 +12,27 @@ from typing import Optional, Tuple, List, Dict, Any, BinaryIO
 from datetime import datetime
 from pathlib import Path
 
-import aiofiles
 from PIL import Image, ImageOps, ExifTags
-import pillow_heif
-import structlog
 from loguru import logger
+
+# Optional imports
+try:
+    import aiofiles
+    AIOFILES_AVAILABLE = True
+except ImportError:
+    AIOFILES_AVAILABLE = False
+
+try:
+    import pillow_heif
+    PILLOW_HEIF_AVAILABLE = True
+except ImportError:
+    PILLOW_HEIF_AVAILABLE = False
+
+try:
+    import structlog
+    STRUCTLOG_AVAILABLE = True
+except ImportError:
+    STRUCTLOG_AVAILABLE = False
 
 # Optional moviepy import for video processing
 try:
@@ -36,7 +52,7 @@ class StorageService:
     def __init__(self, max_retries: int = 5):
         """Initialize the storage service."""
         self.max_retries = max_retries
-        self.logger = structlog.get_logger(__name__)
+        self.logger = logger
         
         # Image compression settings
         self.image_max_width = 1920
@@ -59,7 +75,8 @@ class StorageService:
         self.retry_delays = [1, 2, 4, 8, 16]  # Exponential backoff
         
         # Enable HEIF support
-        pillow_heif.register_heif_opener()
+        if PILLOW_HEIF_AVAILABLE:
+            pillow_heif.register_heif_opener()
 
     async def compress_image(self, image_data: bytes, filename: str) -> Tuple[bytes, str]:
         """Compress an image with optimization."""
