@@ -325,9 +325,17 @@ class StorageService:
                 media_type = MediaTypeEnum.IMAGE
                 if progress_callback:
                     progress_callback(25, "Compressing image...")
-                compressed_data, new_filename = await self.compress_image(
-                    media_upload.data, media_upload.filename
-                )
+                try:
+                    compressed_data, new_filename = await self.compress_image(
+                        media_upload.data, media_upload.filename
+                    )
+                except Exception as e:
+                    # Fallback: upload original image if compression fails (e.g., unsupported format)
+                    self.logger.warning(
+                        f"Image compression failed for {media_upload.filename}: {e}. Uploading original file without compression."
+                    )
+                    compressed_data = media_upload.data
+                    new_filename = media_upload.filename
             elif file_ext in self.video_formats:
                 media_type = MediaTypeEnum.VIDEO
                 if progress_callback:
