@@ -545,8 +545,15 @@ def get_supabase_client() -> SupabaseClient:
     """Get the global Supabase client instance."""
     global supabase_client
     if supabase_client is None:
-        supabase_url = os.getenv("SUPABASE_URL", "http://localhost:8000")
-        supabase_key = os.getenv("SUPABASE_ANON_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0")
+        try:
+            # Try Streamlit secrets first
+            import streamlit as st
+            supabase_url = st.secrets["SUPABASE_URL"]
+            supabase_key = st.secrets["SUPABASE_ANON_KEY"]
+        except:
+            # Fall back to environment variables for local development
+            supabase_url = os.getenv("SUPABASE_URL", "http://localhost:8000")
+            supabase_key = os.getenv("SUPABASE_ANON_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0")
         supabase_client = SupabaseClient(supabase_url, supabase_key)
     return supabase_client
 
