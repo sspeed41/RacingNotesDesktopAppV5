@@ -1,57 +1,20 @@
 # Core Framework
-streamlit==1.46.1
-pydantic==2.11.7
+streamlit
 
 # Database & Storage
-supabase==2.16.0
-postgrest==0.13.2
-realtime==2.0.4
-gotrue==2.8.2
+supabase
+postgrest
 
-# Async Operations
-asyncio-throttle==1.0.2
-aiohttp==3.9.5
-aiofiles==23.2.0
+# Basic utilities
+requests
+python-dotenv
 
-# Media Processing
-Pillow==11.3.0
-moviepy==1.0.3
-pillow-heif==0.13.0
+# Data processing
+pandas
+numpy
 
-# Data Processing
-pandas==2.2.0
-numpy==1.26.3
+# Media processing
+Pillow
 
-# Date/Time Utilities
-python-dateutil==2.8.2
-humanize==4.9.0
-
-# UI/UX Enhancements
-streamlit-extras==0.4.0
-streamlit-option-menu==0.3.6
-streamlit-aggrid==1.0.5
-
-# Validation & Security
-email-validator==2.1.0
-validators==0.22.0
-
-# Logging & Monitoring
-loguru==0.7.2
-structlog==23.2.0
-
-# Testing (removed for production deployment)
-# pytest==7.4.4
-# pytest-asyncio==0.21.1
-# pytest-mock==3.12.0
-# faker==22.2.0
-
-# Development Tools (removed for production deployment)
-# black==23.12.1
-# flake8==7.0.0
-# mypy==1.8.0
-# pre-commit==3.6.0
-
-# Additional Utilities
-tqdm==4.66.1
-python-dotenv==1.0.0
-requests==2.31.0 
+# Date utilities
+python-dateutil 
