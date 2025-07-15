@@ -360,12 +360,12 @@ CREATE POLICY "Allow all operations" ON replies FOR ALL USING (true);
 
 -- Setup storage buckets for media files
 INSERT INTO storage.buckets (id, name, public) VALUES 
-    ('racing-notes-media', 'racing-notes-media', true);
+    ('racing-notes-v5-media', 'racing-notes-v5-media', true);
 
 -- Create storage policy for media bucket
 CREATE POLICY "Allow all operations on media bucket"
     ON storage.objects FOR ALL
-    USING (bucket_id = 'racing-notes-media');
+    USING (bucket_id = 'racing-notes-v5-media');
 
 -- Create view for easy querying
 CREATE VIEW notes_feed AS

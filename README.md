@@ -230,7 +230,7 @@ docker run -p 8501:8501 --env-file .env racing-notes-v5
 1. Create a new project at https://supabase.com
 2. Run the schema.sql in the SQL editor
 3. Run the seed-data.sql for initial data
-4. Set up storage bucket "racing-notes-media"
+4. Set up storage bucket "racing-notes-v5-media"
 5. Update environment variables
 
 ## 🔒 Security

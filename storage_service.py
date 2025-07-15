@@ -259,7 +259,7 @@ class StorageService:
             unique_filename = f"{timestamp}/{uuid.uuid4()}_{filename}"
             
             # Upload to Supabase storage
-            result = client.client.storage.from_("racing-notes-media").upload(
+            result = client.client.storage.from_("racing-notes-v5-media").upload(
                 unique_filename, file_data, file_options={"content-type": content_type}
             )
             
@@ -267,7 +267,7 @@ class StorageService:
                 raise Exception(f"Storage upload failed: {result['error']}")
             
             # Get public URL
-            public_url = client.client.storage.from_("racing-notes-media").get_public_url(unique_filename)
+            public_url = client.client.storage.from_("racing-notes-v5-media").get_public_url(unique_filename)
             
             # Calculate file size in MB
             size_mb = len(file_data) / (1024 * 1024)
@@ -329,16 +329,16 @@ class StorageService:
             client = get_supabase_client()
             
             # Extract filename from URL
-            # Assuming URL format: .../storage/v1/object/public/racing-notes-media/filename
+            # Assuming URL format: .../storage/v1/object/public/racing-notes-v5-media/filename
             parts = file_url.split('/')
-            if 'racing-notes-media' in parts:
-                filename_parts = parts[parts.index('racing-notes-media') + 1:]
+            if 'racing-notes-v5-media' in parts:
+                filename_parts = parts[parts.index('racing-notes-v5-media') + 1:]
                 filename = '/'.join(filename_parts)
             else:
                 raise ValueError("Invalid file URL format")
             
             # Delete from storage
-            result = client.client.storage.from_("racing-notes-media").remove([filename])
+            result = client.client.storage.from_("racing-notes-v5-media").remove([filename])
             
             if result.get("error"):
                 raise Exception(f"Storage delete failed: {result['error']}")
