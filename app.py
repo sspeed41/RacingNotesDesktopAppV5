@@ -833,6 +833,8 @@ def main():
     
     except Exception as e:
         st.error(f"Application error: {e}")
+        import traceback
+        st.code(traceback.format_exc())
         logger.error(f"Application error: {e}")
 
 if __name__ == "__main__":

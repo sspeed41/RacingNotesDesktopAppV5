@@ -35,3 +35,6 @@ moviepy
 
 # HEIF support
 pillow-heif 
+
+# Excel export
+openpyxl 
