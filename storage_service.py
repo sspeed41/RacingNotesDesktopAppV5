@@ -291,15 +291,32 @@ class StorageService:
             unique_filename = f"{timestamp}/{uuid.uuid4()}_{filename}"
             
             # Upload to Supabase storage
-            result = client.client.storage.from_("racing-notes-v5-media").upload(
-                unique_filename, file_data, file_options={"content-type": content_type}
+            upload_response = client.client.storage.from_("racing-notes-v5-media").upload(
+                unique_filename,
+                file_data,
+                file_options={"content-type": content_type},
             )
             
-            if result.get("error"):
-                raise Exception(f"Storage upload failed: {result['error']}")
-            
-            # Get public URL
-            public_url = client.client.storage.from_("racing-notes-v5-media").get_public_url(unique_filename)
+            # supabase-py returns an object with data/error attributes or dict-like structure
+            error_msg = None
+            if isinstance(upload_response, dict):
+                error_msg = upload_response.get("error")
+            else:
+                # Fallback for object with .error attribute
+                error_msg = getattr(upload_response, "error", None)
+            if error_msg:
+                raise Exception(f"Storage upload failed: {error_msg}")
+
+            # Get public URL (may return dict {data:{publicUrl:...}} or simple string)
+            url_response = client.client.storage.from_("racing-notes-v5-media").get_public_url(unique_filename)
+            if isinstance(url_response, dict):
+                public_url = (
+                    url_response.get("data", {}).get("publicUrl")
+                    or url_response.get("publicURL")
+                    or url_response.get("public_url")
+                )
+            else:
+                public_url = url_response
             
             # Calculate file size in MB
             size_mb = len(file_data) / (1024 * 1024)
