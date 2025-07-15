@@ -208,7 +208,7 @@ def create_note_card(note: NoteWithDetails) -> None:
             
             with col1:
                 components.html(f"""
-                <div class=\"note-card\">
+                <div style=\"background:#2D3748; border-radius:12px; padding:20px; margin:16px 0;\">
                     <div style=\"display: flex; align-items: center; margin-bottom: 10px;\">
                         <div style=\"width: 40px; height: 40px; background: #3B82F6; \
                                     border-radius: 50%; display: flex; align-items: center; \
@@ -225,14 +225,14 @@ def create_note_card(note: NoteWithDetails) -> None:
                         </div>
                     </div>
                     
-                    <div style=\"margin-bottom: 15px; line-height: 1.5; color: #333333;\">
+                    <div style=\"margin-bottom: 15px; line-height: 1.5; color:#F1F1F1;\">
                         {note.body}
                     </div>
                     
                     <div style=\"display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;\">
                         {f'<span style=\"background: #3B82F6; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; display: inline-block;\">📍 {note.track_name}</span>' if note.track_name else ''}
                         {f'<span style=\"background: #10B981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; display: inline-block;\">🏆 {note.series_name}</span>' if note.series_name else ''}
-                        {f'<span style=\"background: #F59E0B; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; display: inline-block;\">🚗 {note.session_type}</span>' if note.session_type else ''}
+                        {f'<span style=\"background: #F59E0B; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; display: inline-block;\">�� {note.session_type.value}</span>' if note.session_type else ''}
                         {f'<span style=\"background: #8B5CF6; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; display: inline-block;\">📂 {note.category.value}</span>'}
                     </div>
                     
