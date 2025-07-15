@@ -190,10 +190,14 @@ class NoteWithDetails(Note):
     track_name: Optional[str] = None
     track_type: Optional[TrackTypeEnum] = None
     series_name: Optional[str] = None
-    tags: List[Tag] = Field(default_factory=list)
-    media: List[Media] = Field(default_factory=list)
+    tags: Optional[List[Tag]] = Field(default_factory=list)
+    media: Optional[List[Media]] = Field(default_factory=list)
     likes_count: int = Field(default=0)
     replies_count: int = Field(default=0)
+
+    @validator('tags', 'media', pre=True, always=True)
+    def default_empty_list(cls, v):
+        return v or []
 
 
 class MediaUpload(BaseModel):
