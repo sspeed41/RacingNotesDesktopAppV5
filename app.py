@@ -216,7 +216,7 @@ def create_note_card(note: NoteWithDetails) -> None:
                             <span style=\"color: white; font-weight: bold;\">🏁</span>
                         </div>
                         <div>
-                            <div style=\"font-weight: 600; color: #FFFFFF;\">
+                            <div style=\"font-weight: 600; color: #1F2937;\">
                                 {note.driver_name or "General Note"}
                             </div>
                             <div style=\"font-size: 0.9em; color: #CCCCCC;\">
@@ -225,7 +225,7 @@ def create_note_card(note: NoteWithDetails) -> None:
                         </div>
                     </div>
                     
-                    <div style=\"margin-bottom: 15px; line-height: 1.5; color: #FFFFFF;\">
+                    <div style=\"margin-bottom: 15px; line-height: 1.5; color: #333333;\">
                         {note.body}
                     </div>
                     
@@ -240,13 +240,13 @@ def create_note_card(note: NoteWithDetails) -> None:
                         {''.join([f'<span style=\"background: #6B7280; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; display: inline-block;\">#{tag.label}</span>' for tag in (note.tags or [])])}
                     </div>
                 </div>
-                """, height=250)
+                """, height=320)
             
             with col2:
                 # Action buttons
                 col2a, col2b = st.columns(2)
                 with col2a:
-                    if st.button("��", key=f"like_{note.id}"):
+                    if st.button("", key=f"like_{note.id}"):
                         # TODO: Implement like functionality
                         info_toast("Like functionality coming soon!")
                 
