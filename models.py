@@ -220,6 +220,14 @@ class MediaUpload(BaseModel):
         return v
 
 
+class UploadedMedia(BaseModel):
+    """Model for uploaded media info."""
+    file_url: str
+    type: MediaTypeEnum
+    size_mb: float
+    filename: str
+
+
 class NoteCreate(BaseModel):
     """Model for creating new notes."""
     body: str = Field(..., min_length=1, max_length=5000)
@@ -228,7 +236,7 @@ class NoteCreate(BaseModel):
     session_id: Optional[UUID] = None
     category: CategoryEnum = Field(default=CategoryEnum.GENERAL)
     tag_ids: List[UUID] = Field(default_factory=list)
-    media_files: List[MediaUpload] = Field(default_factory=list)
+    media_files: List[UploadedMedia] = Field(default_factory=list)
 
     @validator('body')
     def validate_body(cls, v):

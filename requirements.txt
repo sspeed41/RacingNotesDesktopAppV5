@@ -26,3 +26,12 @@ loguru
 
 # Media Processing
 Pillow 
+
+# Async support
+nest_asyncio
+
+# Video processing
+moviepy
+
+# HEIF support
+pillow-heif 

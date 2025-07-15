@@ -19,7 +19,7 @@ import plotly.graph_objects as go
 
 from models import (
     NoteCreate, SearchFilters, MediaUpload, NoteWithDetails,
-    TrackTypeEnum, SessionTypeEnum, CategoryEnum, MediaTypeEnum
+    TrackTypeEnum, SessionTypeEnum, CategoryEnum, MediaTypeEnum, UploadedMedia
 )
 from supabase_client import get_supabase_client, initialize_client
 from storage_service import get_storage_service
@@ -28,6 +28,8 @@ from utils import (
     UIUtils, success_toast, error_toast, info_toast, warning_toast,
     get_time_ago, format_size, truncate
 )
+import nest_asyncio
+nest_asyncio.apply()
 
 # Configure page
 st.set_page_config(
@@ -234,7 +236,7 @@ def create_note_card(note: NoteWithDetails) -> None:
                     </div>
                     
                     <div style="display: flex; gap: 8px;">
-                        {''.join([f'<span class="tag">#{tag.get("label", "")}</span>' for tag in note.tags])}
+                        {''.join([f'<span class="tag">#{tag.label}</span>' for tag in note.tags])}
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -257,12 +259,12 @@ def create_note_card(note: NoteWithDetails) -> None:
                 cols = st.columns(min(len(note.media), 3))
                 for i, media in enumerate(note.media[:3]):
                     with cols[i % 3]:
-                        if media.get("type") == "image":
-                            st.image(media.get("file_url"), use_column_width=True)
-                        elif media.get("type") == "video":
-                            st.video(media.get("file_url"))
+                        if media.type.value == 'image':
+                            st.image(media.file_url, use_column_width=True)
+                        elif media.type.value == 'video':
+                            st.video(media.file_url)
                         
-                        st.caption(f"{media.get('filename')} ({format_size(int(media.get('size_mb', 0) * 1024 * 1024))})")
+                        st.caption(f"{media.filename} ({format_size(int(media.size_mb * 1024 * 1024))})")
                 
                 if len(note.media) > 3:
                     st.info(f"+ {len(note.media) - 3} more media files")
@@ -438,12 +440,12 @@ def create_note_form():
                                     storage_service.process_and_upload_media(media_upload)
                                 )
                                 
-                                media_uploads.append({
-                                    "file_url": public_url,
-                                    "type": MediaTypeEnum.IMAGE if file.type.startswith('image/') else MediaTypeEnum.VIDEO,
-                                    "size_mb": size_mb,
-                                    "filename": new_filename
-                                })
+                                media_uploads.append(UploadedMedia(
+                                    file_url=public_url,
+                                    type=MediaTypeEnum.IMAGE if file.type.startswith('image/') else MediaTypeEnum.VIDEO,
+                                    size_mb=size_mb,
+                                    filename=new_filename
+                                ))
                                 
                             except Exception as e:
                                 error_toast(f"Failed to process {file.name}: {e}")
@@ -461,10 +463,10 @@ def create_note_form():
                     for media_info in note_data.media_files:
                         asyncio.run(client.create_media(
                             note_id=note.id,
-                            file_url=media_info["file_url"],
-                            media_type=media_info["type"],
-                            size_mb=media_info["size_mb"],
-                            filename=media_info["filename"]
+                            file_url=media_info.file_url,
+                            media_type=media_info.type,
+                            size_mb=media_info.size_mb,
+                            filename=media_info.filename
                         ))
                     
                     success_toast("Note created successfully!")
