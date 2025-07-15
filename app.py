@@ -210,34 +210,34 @@ def create_note_card(note: NoteWithDetails) -> None:
                 components.html(f"""
                 <div class=\"note-card\">
                     <div style=\"display: flex; align-items: center; margin-bottom: 10px;\">
-                        <div style=\"width: 40px; height: 40px; background: var(--primary-color); \
+                        <div style=\"width: 40px; height: 40px; background: #3B82F6; \
                                     border-radius: 50%; display: flex; align-items: center; \
                                     justify-content: center; margin-right: 12px;\">
                             <span style=\"color: white; font-weight: bold;\">🏁</span>
                         </div>
                         <div>
-                            <div style=\"font-weight: 600; color: var(--dark-bg);\">
+                            <div style=\"font-weight: 600; color: #FFFFFF;\">
                                 {note.driver_name or "General Note"}
                             </div>
-                            <div style=\"font-size: 0.9em; color: #666;\">
+                            <div style=\"font-size: 0.9em; color: #CCCCCC;\">
                                 {get_time_ago(note.created_at)}
                             </div>
                         </div>
                     </div>
                     
-                    <div style=\"margin-bottom: 15px; line-height: 1.5;\">
+                    <div style=\"margin-bottom: 15px; line-height: 1.5; color: #FFFFFF;\">
                         {note.body}
                     </div>
                     
                     <div style=\"display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;\">
-                        {f'<span class=\"tag\">📍 {note.track_name}</span>' if note.track_name else ''}
-                        {f'<span class=\"tag\">🏆 {note.series_name}</span>' if note.series_name else ''}
-                        {f'<span class=\"tag\">🚗 {note.session_type}</span>' if note.session_type else ''}
-                        {f'<span class=\"tag\">📂 {note.category.value}</span>'}
+                        {f'<span style=\"background: #3B82F6; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; display: inline-block;\">📍 {note.track_name}</span>' if note.track_name else ''}
+                        {f'<span style=\"background: #10B981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; display: inline-block;\">🏆 {note.series_name}</span>' if note.series_name else ''}
+                        {f'<span style=\"background: #F59E0B; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; display: inline-block;\">🚗 {note.session_type}</span>' if note.session_type else ''}
+                        {f'<span style=\"background: #8B5CF6; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; display: inline-block;\">📂 {note.category.value}</span>'}
                     </div>
                     
                     <div style=\"display: flex; gap: 8px;\">
-                        {''.join([f'<span class=\"tag\">#{tag.label}</span>' for tag in (note.tags or [])])}
+                        {''.join([f'<span style=\"background: #6B7280; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin: 2px 4px; display: inline-block;\">#{tag.label}</span>' for tag in (note.tags or [])])}
                     </div>
                 </div>
                 """, height=250)
@@ -246,7 +246,7 @@ def create_note_card(note: NoteWithDetails) -> None:
                 # Action buttons
                 col2a, col2b = st.columns(2)
                 with col2a:
-                    if st.button("👍", key=f"like_{note.id}"):
+                    if st.button("��", key=f"like_{note.id}"):
                         # TODO: Implement like functionality
                         info_toast("Like functionality coming soon!")
                 
