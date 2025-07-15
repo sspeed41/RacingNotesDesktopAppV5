@@ -13,7 +13,13 @@ from datetime import datetime, timedelta
 from supabase import create_client, Client
 from postgrest.exceptions import APIError
 from loguru import logger
-import structlog
+
+# Optional structlog import
+try:
+    import structlog
+    STRUCTLOG_AVAILABLE = True
+except ImportError:
+    STRUCTLOG_AVAILABLE = False
 
 from models import (
     Track, Series, Driver, Session, Note, Media, Tag, NoteTag,
@@ -31,7 +37,7 @@ class SupabaseClient:
         self.supabase_key = supabase_key
         self.max_retries = max_retries
         self.client: Optional[Client] = None
-        self.logger = structlog.get_logger(__name__)
+        self.logger = structlog.get_logger(__name__) if STRUCTLOG_AVAILABLE else logger
         
         # Setup logging
         logging.basicConfig(
