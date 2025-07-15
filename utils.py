@@ -16,6 +16,8 @@ import streamlit as st
 from dateutil import parser as date_parser
 from loguru import logger
 
+import io
+
 
 class TimeUtils:
     """Utility functions for time and date operations."""
