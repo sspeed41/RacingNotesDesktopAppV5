@@ -1,20 +1,35 @@
 # Core Framework
 streamlit
+pydantic
 
 # Database & Storage
 supabase
 postgrest
 
+# UI Components
+streamlit-option-menu
+plotly
+
+# Async Operations
+aiofiles
+
+# Media Processing
+Pillow
+pillow-heif
+moviepy
+
+# Logging
+loguru
+structlog
+
 # Basic utilities
 requests
 python-dotenv
+humanize
 
 # Data processing
 pandas
 numpy
-
-# Media processing
-Pillow
 
 # Date utilities
 python-dateutil 
